@@ -1,0 +1,29 @@
+{% extends 'tracker/base.html' %}
+
+{% block body %}
+<h1>index.html</h1>
+
+<form action="" method="post">
+    <h2>Add Expense</h2>
+    {% csrf_token %}
+
+    <div> 
+        <label>Expense name</label>
+        {{ expense_form.name }}
+    </div>
+    <div> 
+        <label>Expense amount</label>
+        {{ expense_form.amount }}
+    </div>
+    <div> 
+        <label>Expense category</label>
+        {{ expense_form.category }}
+    </div>
+    <button type="submit">Add</button>
+
+
+
+   
+</form>
+
+{% endblock %}
