@@ -51,6 +51,15 @@
                 <td>{{expense.name}}</td>
                 <td>{{ expense.category }}</td>
                 <td>{{ expense.amount }}</td>
+                <td>
+                   <a href="{% url 'edit' expense.id %}">Modify</a>
+                </td>
+                <td>
+                 <form method="POST" action="{% url 'delete' expense.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                 </form>
+                </td>
             </tr>
              {% endfor %}
         </tbody>

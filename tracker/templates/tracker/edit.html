@@ -1,0 +1,10 @@
+{% extends 'tracker/base.html' %}
+{% block body %}
+<form action="" method="POST">
+     {% csrf_token %}
+{{expense_form}}
+<button type="submit">Submit</button>
+
+
+</form>
+{% endblock %}
