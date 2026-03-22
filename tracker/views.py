@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from .forms import Expenseform
 from .models import Expense
+from django.db.models import Sum
 
 def index(request):
     if request.method=="POST":
@@ -8,8 +9,10 @@ def index(request):
         if expense.is_valid():
             expense.save()
     expenses=Expense.objects.all()
+    total_expense=expenses.aggregate(Sum("amount"))['amount__sum']
+    print(total_expense)
     expense_form=Expenseform()
-    return render( request,'tracker/index.html',{'expense_form':expense_form,'expenses':expenses})
+    return render( request,'tracker/index.html',{'expense_form':expense_form,'expenses':expenses,'total_expense':total_expense})
 
 
 def edit(request,id):
