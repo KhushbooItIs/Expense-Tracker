@@ -19,7 +19,7 @@ def index(request):
 
     data=Expense.objects.filter(date__gt=last_year)
 
-    Yearly_sum=expenses.aggregate(Sum("amount"))['amount__sum']
+    yearly_sum=expenses.aggregate(Sum("amount"))['amount__sum']
 
 
     last_month=datetime.date.today()-datetime.timedelta(days=30)
@@ -31,15 +31,26 @@ def index(request):
 
     data=Expense.objects.filter(date__gt=last_week)
     weekly_sum=expenses.aggregate(Sum("amount"))['amount__sum']
+         
+    daily_sum = Expense.objects.filter().values('date').order_by('date').annotate(
+    total=Sum('amount'))
 
+    categorical_sums = Expense.objects.filter().values('category').annotate(
+    total=Sum('amount'))
+    print(categorical_sums)
+    print(daily_sum)
 
+    return render(request, 'tracker/dark-modern-index.html', {
+    'expense_form': expense_form,
+    'expenses': expenses,
+    'total_expense': total_expense,
+    'yearly_sum': yearly_sum,
+    'monthly_sum': monthly_sum,
+    'weekly_sum': weekly_sum,
+    'daily_sum': daily_sum,
+    'categorical_sums':categorical_sums,
 
-    return render( request,'tracker/index.html',{'expense_form':expense_form,'expenses':expenses,
-                                                 'total_expense':total_expense,
-                                                 'yearly_sum': Yearly_sum,
-                                                 'monthly_sum':monthly_sum,
-                                                 'weekly_sum':weekly_sum})
-
+})
 
 def edit(request,id):
    
@@ -51,7 +62,7 @@ def edit(request,id):
             form.save()
             return redirect('index')
 
-    return render(request,'tracker/edit.html',{'expense_form':expense_form})
+    return render(request,'tracker/modern-edit.html',{'expense_form':expense_form})
 
 
 def delete(request,id):
